@@ -1,0 +1,129 @@
+#include<stdio.h>
+#define max 25
+int memory[max],process[max],i,j,nm,np,temp,lowest=9999,highest=0;
+int bf_first[max],ff_first[max],frag_first[max],bf_best[max],ff_best[max],frag_best[max],bf_worst[max],ff_worst[max],frag_worst[max];
+void first_fit(int np, int nm, int memory[], int process[]){
+    /////first fit algo
+    for(i=1;i<=np;i++)
+    {
+        for(j=1;j<=nm;j++)
+        {
+            if(bf_first[j]!=1)
+            {
+                temp=memory[j]-process[i];
+                if(temp>=0)
+                {
+                    ff_first[i]=j;
+                    break;
+                }
+            }
+        }
+        frag_first[i]=temp;
+        bf_first[ff_first[i]]=1;
+    }
+    printf("\nFirst Fit:\n");
+    printf("\nFile_no:\tFile_size :\tBlock_no:\tBlock_size:");
+    for(i=1;i<=np;i++)
+    printf("\n%d\t\t%d\t\t%d\t\t%d\t",i,process[i],ff_first[i],memory[ff_first[i]]);
+}
+void best_fit(int np, int nm, int memory[], int process[]){
+/////best fit algo
+        int temp = 0;
+    for(i=1;i<=np;i++)
+    {
+        for(j=1;j<=nm;j++)
+        {
+        if(bf_best[j]!=1)
+            {
+            if(process[j] <= memory[j]){
+            temp=memory[j]-process[i];
+                if(temp>=0)
+                {
+                    if(lowest >= temp)
+                         lowest = temp;
+                }
+                {
+                    ff_best[i]=j;
+                    break;
+                }
+            }
+            }
+        }
+        frag_best[i]=lowest;
+        bf_best[ff_best[i]]=1;
+    }
+     printf("\nBest Fit:\n");
+    printf("\nFile_no:\tFile_size :\tBlock_no:\tBlock_size:");
+    for(i=1;i<=np;i++)
+    printf("\n%d\t\t%d\t\t%d\t\t%d\t",i,process[i],ff_best[i],memory[ff_best[i]]);
+}
+void worst_fit(int np, int nm, int memory[], int process[]){
+//////worst fit algo
+    int temp = 0;
+        for(i=1;i<=np;i++)
+    {
+        for(j=1;j<=nm;j++)
+        {
+        if(bf_worst[j]!=1)
+            {
+            if(process[j] <= memory[j]){
+            temp=memory[j]-process[i];
+                if(temp>=0)
+                {
+                    if(lowest >= temp)
+                         highest = temp;
+                }
+                {
+                    ff_worst[i]=j;
+                    break;
+                }
+            }
+            }
+        }
+        frag_worst[i]=highest;
+        bf_worst[ff_worst[i]]=1;
+    }
+    printf("\nWorst Fit:\n");
+    printf("\nFile_no:\tFile_size :\tBlock_no:\tBlock_size:");
+    for(i=1;i<=np;i++)
+    printf("\n%d\t\t%d\t\t%d\t\t%d\t",i,process[i],ff_worst[i],memory[ff_worst[i]]);
+}
+void main()
+{
+
+    printf("\nEnter the number of memory partitions:");
+    scanf("%d",&nm);
+    printf("Enter the number of process requirements:");
+    scanf("%d",&np);
+    printf("Enter the Memory partitions(in order):");
+    for(i=1;i<=nm;i++)
+    {
+        scanf("%d",&memory[i]);
+    }
+    printf("Enter the process requirements(in order):");
+    for(i=1;i<=np;i++)
+    {
+        scanf("%d",&process[i]);
+    }
+
+   int choice;
+   while(1){
+   printf("\nEnter the choice for the type of fit:\n");
+   printf("\n1 for First Fit, 2 for Best Fit, 3 for Worst Fit and 4 for Exit:");
+   scanf("%d",&choice);
+   switch(choice){
+        case 1:
+               first_fit(np, nm, memory, process);
+               break;
+        case 2:
+               best_fit(np, nm, memory, process);
+               break;
+        case 3:
+               worst_fit(np, nm, memory, process);
+               break;
+        case 4:
+                printf("wrong choice");
+        break;
+                }  
+   }
+} 
